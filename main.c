@@ -3,11 +3,21 @@
 #include <allegro5/allegro_primitives.h>
 #include "game_common.h"
 
+
 typedef struct player{
     float x, y ;  // coordonnées
     float wp, hp; // dimensions
     float dx, dy; // deplacement par pas de temps,
 } PLAYER;
+
+void initPlayer(PLAYER * p, float wp, float hp, float dx, float dy){
+    p->dx = dx;
+    p->dy = dy;
+    p->wp = wp;
+    p->hp = hp;
+    p->x = WDISPLAY / 2.0 - wp / 2.0;
+    p->y = HDISPLAY / 2.0 - hp / 2.0;
+}
 
 int main() {
     // declarations
@@ -16,9 +26,9 @@ int main() {
     ALLEGRO_EVENT_QUEUE * fifo;
     ALLEGRO_COLOR red;
     ALLEGRO_EVENT event;
-    PLAYER p;
+    PLAYER p1, p2;
     bool fini = false;
-    bool gauche = false;
+    bool flags[NUMFLAGS] = {false};
 
     // initialisation
     // al_init_*
@@ -30,12 +40,8 @@ int main() {
     // al_install_*
     assert(al_install_keyboard());
     // initialisation player
-    p.wp = 80;
-    p.hp = 50;
-    p.dx = 10;
-    p.dy = 10;
-    p.x = WDISPLAY /2.0 - p.wp/2.0;
-    p.y = HDISPLAY /2.0 - p.hp/2.0;
+    initPlayer(&p1, 80, 50, 10,10);
+    initPlayer(&p2, 100, 20, 5,5);
 
     // Creation
     // al_create_*
@@ -63,34 +69,68 @@ int main() {
                         fini = true;
                         break;
                     case ALLEGRO_KEY_LEFT:
-                        gauche = true;
+                        flags[LEFT] = true;
                         break;
                     case ALLEGRO_KEY_RIGHT:
-                        if((p.x+p.wp)>=WDISPLAY){
-                            p.x = WDISPLAY - p.wp;
-                        } else{
-                            p.x += p.dx;
-                        }
+                        flags[RIGHT] = true;
+                        break;
+                    case ALLEGRO_KEY_Q:
+                        flags[Q]= true;
+                        break;
+                    case ALLEGRO_KEY_D:
+                        flags[D]= true;
                         break;
                 }
                 break;
             case ALLEGRO_EVENT_KEY_UP:
                 switch (event.keyboard.keycode) {
                     case ALLEGRO_KEY_LEFT:
-                        gauche =false;
+                        flags[LEFT] =false;
+                        break;
+                    case ALLEGRO_KEY_RIGHT:
+                        flags[RIGHT] = false;
+                        break;
+                    case ALLEGRO_KEY_Q:
+                        flags[Q]= false;
+                        break;
+                    case ALLEGRO_KEY_D:
+                        flags[D]= false;
                         break;
                 }
                 break;
             case ALLEGRO_EVENT_TIMER:
-                if (gauche == true) {
-                    if (p.x <= 0) {
-                        p.x = 0;
+                if (flags[LEFT] == true) {
+                    if (p1.x <= 0) {
+                        p1.x = 0;
                     } else {
-                        p.x = p.x - p.dx;
+                        p1.x = p1.x - p1.dx;
+                    }
+                }
+                if(flags[RIGHT]){
+                    if((p1.x + p1.wp) >= WDISPLAY){
+                        p1.x = WDISPLAY - p1.wp;
+                    } else{
+                        p1.x += p1.dx;
+                    }
+                }
+                if (flags[Q] == true) {
+                    if (p2.x <= 0) {
+                        p2.x = 0;
+                    } else {
+                        p2.x = p2.x - p2.dx;
+                    }
+                }
+                if(flags[D]){
+                    if((p2.x + p2.wp) >= WDISPLAY){
+                        p2.x = WDISPLAY - p2.wp;
+                    } else{
+                        p2.x += p2.dx;
                     }
                 }
                 al_clear_to_color(BLACK);
-                al_draw_filled_rectangle(p.x, p.y, p.x + p.wp, p.y + p.hp, red);
+                al_draw_filled_rectangle(p1.x, p1.y, p1.x + p1.wp, p1.y + p1.hp, red);
+                al_draw_filled_rectangle(p2.x, p2.y, p2.x + p2.wp, p2.y + p2.hp, red);
+
                 al_flip_display();
                 break;
         }

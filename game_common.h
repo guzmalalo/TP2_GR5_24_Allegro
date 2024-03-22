@@ -6,5 +6,7 @@
 #define HDISPLAY 600
 
 #define BLACK al_map_rgb(0,0,0)
+enum {LEFT, UP, DOWN, RIGHT, Q, D, NUMFLAGS};
+
 
 #endif //TP2_GR5_24_GAME_COMMON_H
