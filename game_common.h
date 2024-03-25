@@ -6,6 +6,7 @@
 #define HDISPLAY 600
 
 #define BLACK al_map_rgb(0,0,0)
+#define BLUE al_map_rgb(0,0,255)
 enum {LEFT, UP, DOWN, RIGHT, Q, D, NUMFLAGS};
 
 

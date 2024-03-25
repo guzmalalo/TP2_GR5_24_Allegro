@@ -74,6 +74,12 @@ int main() {
                     case ALLEGRO_KEY_RIGHT:
                         flags[RIGHT] = true;
                         break;
+                    case ALLEGRO_KEY_UP:
+                        flags[UP] = true;
+                        break;
+                    case ALLEGRO_KEY_DOWN:
+                        flags[DOWN] = true;
+                        break;
                     case ALLEGRO_KEY_Q:
                         flags[Q]= true;
                         break;
@@ -89,6 +95,12 @@ int main() {
                         break;
                     case ALLEGRO_KEY_RIGHT:
                         flags[RIGHT] = false;
+                        break;
+                    case ALLEGRO_KEY_UP:
+                        flags[UP] = false;
+                        break;
+                    case ALLEGRO_KEY_DOWN:
+                        flags[DOWN] = false;
                         break;
                     case ALLEGRO_KEY_Q:
                         flags[Q]= false;
@@ -129,7 +141,7 @@ int main() {
                 }
                 al_clear_to_color(BLACK);
                 al_draw_filled_rectangle(p1.x, p1.y, p1.x + p1.wp, p1.y + p1.hp, red);
-                al_draw_filled_rectangle(p2.x, p2.y, p2.x + p2.wp, p2.y + p2.hp, red);
+                al_draw_filled_rectangle(p2.x, p2.y, p2.x + p2.wp, p2.y + p2.hp, BLUE);
 
                 al_flip_display();
                 break;
