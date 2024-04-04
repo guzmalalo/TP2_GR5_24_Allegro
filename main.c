@@ -28,7 +28,7 @@ int main() {
     ALLEGRO_EVENT event;
     PLAYER p1, p2;
     bool fini = false;
-    bool flags[NUMFLAGS] = {false};
+    bool flags[ALLEGRO_KEY_MAX] = {false};
 
     // initialisation
     // al_init_*
@@ -64,75 +64,34 @@ int main() {
                 fini = true;
                 break;
             case ALLEGRO_EVENT_KEY_DOWN:
-                switch (event.keyboard.keycode) {
-                    case ALLEGRO_KEY_ESCAPE:
-                        fini = true;
-                        break;
-                    case ALLEGRO_KEY_LEFT:
-                        flags[LEFT] = true;
-                        break;
-                    case ALLEGRO_KEY_RIGHT:
-                        flags[RIGHT] = true;
-                        break;
-                    case ALLEGRO_KEY_UP:
-                        flags[UP] = true;
-                        break;
-                    case ALLEGRO_KEY_DOWN:
-                        flags[DOWN] = true;
-                        break;
-                    case ALLEGRO_KEY_Q:
-                        flags[Q]= true;
-                        break;
-                    case ALLEGRO_KEY_D:
-                        flags[D]= true;
-                        break;
-                }
+                flags[event.keyboard.keycode] = true;
                 break;
             case ALLEGRO_EVENT_KEY_UP:
-                switch (event.keyboard.keycode) {
-                    case ALLEGRO_KEY_LEFT:
-                        flags[LEFT] =false;
-                        break;
-                    case ALLEGRO_KEY_RIGHT:
-                        flags[RIGHT] = false;
-                        break;
-                    case ALLEGRO_KEY_UP:
-                        flags[UP] = false;
-                        break;
-                    case ALLEGRO_KEY_DOWN:
-                        flags[DOWN] = false;
-                        break;
-                    case ALLEGRO_KEY_Q:
-                        flags[Q]= false;
-                        break;
-                    case ALLEGRO_KEY_D:
-                        flags[D]= false;
-                        break;
-                }
+                flags[event.keyboard.keycode] = false;
                 break;
             case ALLEGRO_EVENT_TIMER:
-                if (flags[LEFT] == true) {
+                if (flags[ALLEGRO_KEY_LEFT]) {
                     if (p1.x <= 0) {
                         p1.x = 0;
                     } else {
                         p1.x = p1.x - p1.dx;
                     }
                 }
-                if(flags[RIGHT]){
+                if(flags[ALLEGRO_KEY_RIGHT]){
                     if((p1.x + p1.wp) >= WDISPLAY){
                         p1.x = WDISPLAY - p1.wp;
                     } else{
                         p1.x += p1.dx;
                     }
                 }
-                if (flags[Q] == true) {
+                if (flags[ALLEGRO_KEY_Q]) {
                     if (p2.x <= 0) {
                         p2.x = 0;
                     } else {
                         p2.x = p2.x - p2.dx;
                     }
                 }
-                if(flags[D]){
+                if(flags[ALLEGRO_KEY_D]){
                     if((p2.x + p2.wp) >= WDISPLAY){
                         p2.x = WDISPLAY - p2.wp;
                     } else{
